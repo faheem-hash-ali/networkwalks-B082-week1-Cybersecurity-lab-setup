@@ -1,44 +1,81 @@
 # Networkwalks B082 - Week 1: Cybersecurity Lab Setup
 
-## Overview
-This repository contains the complete documentation, configuration details, and verification steps for setting up a practical Cybersecurity & Ethical Hacking virtual lab environment on Oracle VirtualBox.
+# 🔒 Practical Lab Environment Setup for Pentesting, Ethical Hacking & Cybersecurity
+
+### Building an isolated virtual lab environment for hands-on cybersecurity testing
 
 ---
 
-## 🛠️ Environment Architecture & Specs
+## 💻 Hardware & Host System Specs
+- **Host Operating System:** Windows 11
+- **Processor (CPU):** Intel Core i5
+- **System RAM:** 8 GB
+- **Storage:** 256 GB SSD
 - **Hypervisor:** Oracle VirtualBox
-- **Host OS:** Windows 11
+
+---
+
+## ⚙️ Attacker VM Allocations (Kali Linux)
 - **Primary Attacker VM:** Kali Linux 2026.2
+- **Allocated Memory (RAM):** 2048 MB (2 GB)
+- **Allocated CPU Cores:** 2 Processor Cores
 - **Network Mode:** Custom NAT Network (`NatNetwork`)
-- **Subnet/IP Range:** `10.0.0.0/24`
+- **Subnet / IP Range:** `10.0.0.0/24`
+- **Promiscuous Mode:** `Allow All`
 
 ---
 
-## 📋 Step-by-Step Implementation
+## 🌐 Lab Network Architecture & IP Plan
+All Virtual Machines in this lab setup are configured using a custom **NATNetwork** on subnet `10.0.0.0/24`.
 
-### Phase 1: VirtualBox Network & VM Configuration
-1. **Global NAT Network Creation:**
-   - Created a custom NAT Network named `NatNetwork`.
-   - Set IPv4 Prefix to `10.0.0.0/24` with DHCP enabled.
+| Virtual Machine | Operating System | IP Address / Configuration | Network Adapter Mode |
+| :--- | :--- | :--- | :--- |
+| **Attacker VM** | Kali Linux 2026.2 | `10.0.0.2 /24` (or DHCP) | NATNetwork (`NatNetwork`) |
+| **Target VM 1** | Windows 10 | `10.0.0.10 /24` | NATNetwork (`NatNetwork`) |
+| **Gateway Router** | VirtualBox Gateway | `10.0.0.1` | NATNetwork (`NatNetwork`) |
+
+---
+
+## 📋 Step-by-Step Implementation Workflow
+
+### PHASE 1: Software Installation & Environment Setup
+1. **Tooling & Hypervisor Installation:**
+   - Downloaded and installed **7-Zip** for file extraction.
+   - Installed **Oracle VirtualBox** on the Windows 11 host system.
+2. **Global NAT Network Configuration:**
+   - Navigated to VirtualBox `Tools -> Network -> NAT Networks`.
+   - Created a custom NAT Network named **`NatNetwork`**.
+   - Configured IPv4 Prefix to **`10.0.0.0/24`** with **DHCP Enabled**.
    - Disabled IPv6 to prevent routing and interface conflicts.
-
-2. **Kali Linux 2026.2 VM Setup:**
-   - Allocated recommended CPU cores and RAM (2048 MB).
-   - Set Network Adapter 1 to `NAT Network` attached to `NatNetwork`.
-   - Configured Promiscuous Mode to `Allow All` for lab packet analysis.
+3. **VM Deployment:**
+   - Imported **Kali Linux 2026.2** Virtual Machine into VirtualBox.
+   - Assigned **2048 MB RAM** and **2 CPU Cores**.
+   - Set Network Adapter 1 to **NAT Network** (`NatNetwork`) and enabled **Promiscuous Mode: Allow All** for packet capturing.
 
 ---
 
-### Phase 2: Network Troubleshooting & Issue Resolution
-1. **Fixing Frequent Internet Disconnection Issue:**
-   - Encountered continuous network drops/disconnections on Kali Linux 2026.2 due to Duplicate Address Detection (DAD) timeout conflicts on VirtualBox.
-   - Resolved the disconnection issue permanently by setting the DAD timeout to `0` using `nmcli`:
+### PHASE 2: Network Troubleshooting & Issue Resolution
+
+1. **IP & DNS Setup:**
+   - Configured network interface `eth0` parameters with IPv4 gateway `10.0.0.1` and DNS server `8.8.8.8`.
+2. **Fixing Kali Linux 2026.2 Disconnection Issue (DAD Timeout Fix):**
+   - Encountered continuous internet drops/disconnections on Kali Linux 2026.2 over `eth0` caused by Duplicate Address Detection (DAD) delay.
+   - Fixed the disconnection issue permanently using `nmcli`:
      ```bash
      sudo nmcli connection modify "Wired connection 1" ipv4.dad-timeout 0
      ```
-   - Reconnected the interface to establish a stable and uninterrupted internet connection across the lab environment.
+   - Restarted `NetworkManager` service to establish a stable and uninterrupted connection:
+     ```bash
+     sudo systemctl restart NetworkManager
+     ```
+
+---
+
+### PHASE 3: Verification & Snapshot Management
+1. Verified stable network connectivity and performed ping tests across the gateway and target machines.
+2. Created a clean **Snapshot** in VirtualBox for Kali Linux 2026.2 to preserve the stable state before conducting practical lab attacks.
 
 ---
 
 ## 📜 Credits & Acknowledgments
-Special thanks to **Networkwalks Academy** and instructor **Waqas Karim (CCIE)** for the lab guidance and practical workflow.
+Special thanks to **Networkwalks Academy** and instructor **Waqas Karim (CCIE)** for providing the structured lab guide and training workflow.
