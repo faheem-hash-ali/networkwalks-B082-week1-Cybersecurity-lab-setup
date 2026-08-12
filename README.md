@@ -91,7 +91,7 @@ All Virtual Machines in this lab setup are configured using a custom **NATNetwor
 ![Kali Network Settings](Screenshot-Kali-Machine-Network-Setting.png)
 
 ### 5. Internet Connectivity & Ping Test Verification
-![Ping Google Test](Screenshot-ping_google.com.jpg)
+![Ping Google Test](Screenshot-ping_google.com.png)
 
 ---
 
