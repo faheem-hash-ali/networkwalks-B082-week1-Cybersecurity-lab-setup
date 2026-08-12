@@ -4,21 +4,6 @@
 
 ### Building an isolated virtual lab environment for hands-on cybersecurity testing
 
-### 1. Lab Desktop Environment
-![Kali Lab Setup](VirtualBox_kali-linux-2026.2-virtualbox-Lab-Setup.png)
-
-### 2. VirtualBox Global NAT Network Configuration
-![VirtualBox Network Settings](Screenshot-Virtual_box-Network-Setting.png)
-
-### 3. Kali Linux VM Allocation & Snapshot Details
-![Kali Machine Details](Screenshot-Kali_Machine-Details.png)
-
-### 4. Kali Linux Interface IP & DNS Configuration
-![Kali Network Settings](Screenshot-Kali-Machine-Network-Setting.png)
-
-### 5. Internet Connectivity & Ping Test Verification
-![Ping Google Test](Screenshot-ping_google.com.png)
-
 ---
 
 ## 💻 Hardware & Host System Specs
@@ -94,7 +79,7 @@ All Virtual Machines in this lab setup are configured using a custom **NATNetwor
 ## 📸 Lab Screenshots & Verification
 
 ### 1. Lab Desktop Environment
-![Kali Lab Setup](VirtualBox_kali-linux-2026.2-virtualbox-Lab-Setup.jpg)
+![Kali Lab Setup](VirtualBox_kali-linux-2026.2-virtualbox-Lab-Setup.png)
 
 ### 2. VirtualBox Global NAT Network Configuration
 ![VirtualBox Network Settings](Screenshot-Virtual_box-Network-Setting.png)
@@ -103,7 +88,7 @@ All Virtual Machines in this lab setup are configured using a custom **NATNetwor
 ![Kali Machine Details](Screenshot-Kali_Machine-Details.png)
 
 ### 4. Kali Linux Interface IP & DNS Configuration
-![Kali Network Settings](Screenshot-Kali-Machine-Network-Setting.jpg)
+![Kali Network Settings](Screenshot-Kali-Machine-Network-Setting.png)
 
 ### 5. Internet Connectivity & Ping Test Verification
 ![Ping Google Test](Screenshot-ping_google.com.jpg)
