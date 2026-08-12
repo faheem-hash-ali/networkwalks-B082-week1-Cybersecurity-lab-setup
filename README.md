@@ -30,8 +30,7 @@ All Virtual Machines in this lab setup are configured using a custom **NATNetwor
 
 | Virtual Machine | Operating System | IP Address / Configuration | Network Adapter Mode |
 | :--- | :--- | :--- | :--- |
-| **Attacker VM** | Kali Linux 2026.2 | `10.0.0.2 /24` (or DHCP) | NATNetwork (`NatNetwork`) |
-| **Target VM 1** | Windows 10 | `10.0.0.10 /24` | NATNetwork (`NatNetwork`) |
+| **Attacker VM** | Kali Linux 2026.2 | `10.0.0.2 /24` (via DHCP) | NATNetwork (`NatNetwork`) |
 | **Gateway Router** | VirtualBox Gateway | `10.0.0.1` | NATNetwork (`NatNetwork`) |
 
 ---
@@ -72,7 +71,7 @@ All Virtual Machines in this lab setup are configured using a custom **NATNetwor
 ---
 
 ### PHASE 3: Verification & Snapshot Management
-1. Verified stable network connectivity and performed ping tests across the gateway and target machines.
+1. Verified stable network connectivity and performed ping tests to `google.com` to confirm DNS resolution and internet routing.
 2. Created a clean **Snapshot** in VirtualBox for Kali Linux 2026.2 to preserve the stable state before conducting practical lab attacks.
 
 ---
