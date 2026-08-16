@@ -222,7 +222,7 @@ Promiscuous Mode : Allow All</code></pre>
   <img src="Screenshot-Kali_Machine-Details.png" alt="Kali Linux Hardware Configuration" width="100%" />
 </p>
 <p align="center">
-  <img src="VirtualBox_kali-linux-2026.2-virtualbox-Lab-Setup.jpg" alt="Kali Linux Lab Desktop Environment" width="100%" />
+  <img src="VirtualBox_kali-linux-2026.2-virtualbox-Lab-Setup.png" alt="Kali Linux Lab Desktop Environment" width="100%" />
 </p>
 
 <hr />
