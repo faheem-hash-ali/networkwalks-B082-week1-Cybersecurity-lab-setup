@@ -1,99 +1,76 @@
-# Networkwalks B082 - Week 1: Cybersecurity Lab Setup
+<div align="center">
 
-# 🔒 Practical Lab Environment Setup for Pentesting, Ethical Hacking & Cybersecurity
+# 🛡️ Practical Cybersecurity & Pentesting Lab Setup
 
-### Building an isolated virtual lab environment for hands-on cybersecurity testing
+### Isolated Virtual Environment for Hands-on Security Testing & Ethical Hacking
 
----
+<br/>
 
-## 💻 Hardware & Host System Specs
-- **Host Operating System:** Windows 11
-- **Processor (CPU):** Intel Core i5
-- **System RAM:** 8 GB
-- **Storage:** 256 GB SSD
-- **Hypervisor:** Oracle VirtualBox
+![Cybersecurity](https://img.shields.io/badge/Domain-Cybersecurity-0F172A?style=for-the-badge&labelColor=EF4444&logo=securityscorecard&logoColor=white)
+![Kali Linux](https://img.shields.io/badge/Attacker%20OS-Kali%202026.2-0F172A?style=for-the-badge&labelColor=0EA5E9&logo=kalilinux&logoColor=white)
+![VirtualBox](https://img.shields.io/badge/Hypervisor-VirtualBox%207.x-0F172A?style=for-the-badge&labelColor=2563EB&logo=virtualbox&logoColor=white)
+![Network](https://img.shields.io/badge/Subnet-10.0.0.0%2F24-0F172A?style=for-the-badge&labelColor=0D9488&logo=wireshark&logoColor=white)
+![Linux](https://img.shields.io/badge/Platform-Linux-0F172A?style=for-the-badge&labelColor=334155&logo=linux&logoColor=white)
+![Penetration Testing](https://img.shields.io/badge/Practice-Pentesting-0F172A?style=for-the-badge&labelColor=7C3AED&logo=kalilinux&logoColor=white)
+![Networkwalks](https://img.shields.io/badge/Program-Networkwalks%20B082-0F172A?style=for-the-badge&labelColor=1D4ED8)
+![Mentor](https://img.shields.io/badge/Mentor-Waqas%20Karim%20(CCIE)-0F172A?style=for-the-badge&labelColor=475569)
 
----
+<br/>
 
-## ⚙️ Attacker VM Allocations (Kali Linux)
-- **Primary Attacker VM:** Kali Linux 2026.2
-- **Allocated Memory (RAM):** 2048 MB (2 GB)
-- **Allocated CPU Cores:** 2 Processor Cores
-- **Network Mode:** Custom NAT Network (`NatNetwork`)
-- **Subnet / IP Range:** `10.0.0.0/24`
-- **Promiscuous Mode:** `Allow All`
+**Repository:** `networkwalks-B082-week1-Cybersecurity-lab-setup`  
+*Virtualization • Network Isolation • Kali Linux • Network Troubleshooting*
 
 ---
 
-## 🌐 Lab Network Architecture & IP Plan
-All Virtual Machines in this lab setup are configured using a custom **NATNetwork** on subnet `10.0.0.0/24`.
+</div>
 
-| Virtual Machine | Operating System | IP Address / Configuration | Network Adapter Mode |
-| :--- | :--- | :--- | :--- |
-| **Attacker VM** | Kali Linux 2026.2 | `10.0.0.2 /24` (via DHCP) | NATNetwork (`NatNetwork`) |
-| **Gateway Router** | VirtualBox Gateway | `10.0.0.1` | NATNetwork (`NatNetwork`) |
+## 📌 Executive Summary
 
----
+Setting up a dedicated, segmented virtual laboratory is an essential pre-requisite for ethical hacking and vulnerability assessments. This repository documents the end-to-end deployment of an isolated lab environment using **Oracle VirtualBox** and **Kali Linux 2026.2**.
 
-## 📋 Step-by-Step Implementation Workflow
-
-### PHASE 1: Software Installation & Environment Setup
-1. **Tooling & Hypervisor Installation:**
-   - Downloaded and installed **7-Zip** for file extraction.
-   - Installed **Oracle VirtualBox** on the Windows 11 host system.
-2. **Global NAT Network Configuration:**
-   - Navigated to VirtualBox `Tools -> Network -> NAT Networks`.
-   - Created a custom NAT Network named **`NatNetwork`**.
-   - Configured IPv4 Prefix to **`10.0.0.0/24`** with **DHCP Enabled**.
-   - Disabled IPv6 to prevent routing and interface conflicts.
-3. **VM Deployment:**
-   - Imported **Kali Linux 2026.2** Virtual Machine into VirtualBox.
-   - Assigned **2048 MB RAM** and **2 CPU Cores**.
-   - Set Network Adapter 1 to **NAT Network** (`NatNetwork`) and enabled **Promiscuous Mode: Allow All** for packet capturing.
+The lab architecture is structured to simulate a real-world enterprise subnet (`10.0.0.0/24`) while preventing unauthorized traffic leakage into production or host networks.
 
 ---
 
-### PHASE 2: Network Troubleshooting & Issue Resolution
+## ⚙️ Host & Environment Architecture
 
-1. **IP & DNS Setup:**
-   - Configured network interface `eth0` parameters with IPv4 gateway `10.0.0.1` and DNS server `8.8.8.8`.
-2. **Fixing Kali Linux 2026.2 Disconnection Issue (DAD Timeout Fix):**
-   - Encountered continuous internet drops/disconnections on Kali Linux 2026.2 over `eth0` caused by Duplicate Address Detection (DAD) delay.
-   - Fixed the disconnection issue permanently using `nmcli`:
-     ```bash
-     sudo nmcli connection modify "Wired connection 1" ipv4.dad-timeout 0
-     ```
-   - Restarted `NetworkManager` service to establish a stable and uninterrupted connection:
-     ```bash
-     sudo systemctl restart NetworkManager
-     ```
-
----
-
-### PHASE 3: Verification & Snapshot Management
-1. Verified stable network connectivity and performed ping tests to `google.com` to confirm DNS resolution and internet routing.
-2. Created a clean **Snapshot** in VirtualBox for Kali Linux 2026.2 to preserve the stable state before conducting practical lab attacks.
+| Specification Parameter | System Configuration |
+| :--- | :--- |
+| **Host Operating System** | Windows 11 (64-bit) |
+| **Host Processor (CPU)** | Intel Core i5 |
+| **Host Physical Memory (RAM)** | 8 GB |
+| **Host Storage** | 256 GB SSD |
+| **Hypervisor Engine** | Oracle VM VirtualBox |
+| **Attacker VM OS** | Kali Linux 2026.2 (Debian 64-bit) |
+| **Attacker VM Resources** | 2048 MB RAM • 2 vCPUs |
+| **Network Topology** | Isolated Custom NAT Network (`NatNetwork`) |
+| **Subnet Addressing** | `10.0.0.0/24` (DHCP Enabled, IPv6 Disabled) |
+| **Attacker IP Assignment** | `10.0.0.2/24` |
+| **Default Gateway** | `10.0.0.1` |
+| **Upstream DNS** | `8.8.8.8` (Google Public DNS) |
 
 ---
 
-## 📸 Lab Screenshots & Verification
+## 🗺️ Lab Network Topology
 
-### 1. Lab Desktop Environment
-![Kali Lab Setup](VirtualBox_kali-linux-2026.2-virtualbox-Lab-Setup.png)
-
-### 2. VirtualBox Global NAT Network Configuration
-![VirtualBox Network Settings](Screenshot-Virtual_box-Network-Setting.png)
-
-### 3. Kali Linux VM Allocation & Snapshot Details
-![Kali Machine Details](Screenshot-Kali_Machine-Details.png)
-
-### 4. Kali Linux Interface IP & DNS Configuration
-![Kali Network Settings](Screenshot-Kali-Machine-Network-Setting.png)
-
-### 5. Internet Connectivity & Ping Test Verification
-![Ping Google Test](Screenshot-ping_google.com.png)
-
----
-
-## 📜 Credits & Acknowledgments
-Special thanks to **Networkwalks Academy** and instructor **Waqas Karim (CCIE)** for providing the structured lab guide and training workflow.
+```text
+       ┌──────────────────────────────────────────────┐
+       │             Windows 11 Host OS               │
+       └──────────────────────┬───────────────────────┘
+                              │
+                              ▼
+       ┌──────────────────────────────────────────────┐
+       │          Oracle VM VirtualBox Engine         │
+       └──────────────────────┬───────────────────────┘
+                              │
+                              ▼
+       ┌──────────────────────────────────────────────┐
+       │     Isolated NAT Network [ 10.0.0.0/24 ]     │
+       │     Gateway: 10.0.0.1  |  DNS: 8.8.8.8        │
+       └──────────────────────┬───────────────────────┘
+                              │
+                              ▼
+       ┌──────────────────────────────────────────────┐
+       │       Kali Linux 2026.2 (Attacker VM)        │
+       │       IP: 10.0.0.2/24  |  NIC: eth0          │
+       └──────────────────────────────────────────────┘
