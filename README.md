@@ -1,8 +1,8 @@
 <div align="center">
 
-# 🛡️ Practical Cybersecurity & Pentesting Lab Setup
+# 🛡️ Enterprise Virtual Lab Setup for Penetration Testing & Ethical Hacking
 
-### Isolated Virtual Environment for Hands-on Security Testing & Ethical Hacking
+### Practical Implementation of an Isolated Network Architecture using Oracle VirtualBox & Kali Linux 2026.2
 
 <br/>
 
@@ -18,59 +18,89 @@
 <br/>
 
 **Repository:** `networkwalks-B082-week1-Cybersecurity-lab-setup`  
-*Virtualization • Network Isolation • Kali Linux • Network Troubleshooting*
+*Virtualization • Network Segmentation • NetworkManager Optimization • Kernel Packet Capturing*
 
 ---
 
 </div>
 
-## 📌 Executive Summary
+<br/>
 
-Setting up a dedicated, segmented virtual laboratory is an essential pre-requisite for ethical hacking and vulnerability assessments. This repository documents the end-to-end deployment of an isolated lab environment using **Oracle VirtualBox** and **Kali Linux 2026.2**.
-
-The lab architecture is structured to simulate a real-world enterprise subnet (`10.0.0.0/24`) while preventing unauthorized traffic leakage into production or host networks.
-
----
-
-## ⚙️ Host & Environment Architecture
-
-| Specification Parameter | System Configuration |
-| :--- | :--- |
-| **Host Operating System** | Windows 11 (64-bit) |
-| **Host Processor (CPU)** | Intel Core i5 |
-| **Host Physical Memory (RAM)** | 8 GB |
-| **Host Storage** | 256 GB SSD |
-| **Hypervisor Engine** | Oracle VM VirtualBox |
-| **Attacker VM OS** | Kali Linux 2026.2 (Debian 64-bit) |
-| **Attacker VM Resources** | 2048 MB RAM • 2 vCPUs |
-| **Network Topology** | Isolated Custom NAT Network (`NatNetwork`) |
-| **Subnet Addressing** | `10.0.0.0/24` (DHCP Enabled, IPv6 Disabled) |
-| **Attacker IP Assignment** | `10.0.0.2/24` |
-| **Default Gateway** | `10.0.0.1` |
-| **Upstream DNS** | `8.8.8.8` (Google Public DNS) |
+## 📖 Table of Contents
+1. [Project Overview & Lab Objectives](#-project-overview--lab-objectives)
+2. [Hardware & Virtualization Environment](#-hardware--virtualization-environment)
+3. [Network Topology & Architecture Plan](#-network-topology--architecture-plan)
+4. [Step-by-Step Implementation Roadmap](#-step-by-step-implementation-roadmap)
+   - [Phase 1: Hypervisor Deployment & NAT Network Construction](#phase-1-hypervisor-deployment--nat-network-construction)
+   - [Phase 2: Attacker Machine Deployment (Kali Linux 2026.2)](#phase-2-attacker-machine-deployment-kali-linux-20262)
+   - [Phase 3: Network Interface & DNS Configuration](#phase-3-network-interface--dns-configuration)
+   - [Phase 4: Network Troubleshooting (DAD Timeout Fix)](#phase-4-network-troubleshooting-dad-timeout-fix)
+   - [Phase 5: Routing Verification & Baseline State Management](#phase-5-routing-verification--baseline-state-management)
+5. [Key Technical Learnings](#-key-technical-learnings)
+6. [Security & Ethical Standards](#-security--ethical-standards)
+7. [Acknowledgments & Mentorship](#-acknowledgments--mentorship)
 
 ---
 
-## 🗺️ Lab Network Topology
+<br/>
+
+## 🎯 Project Overview & Lab Objectives
+
+In offensive security and vulnerability research, practicing directly on live or public infrastructure introduces extreme risks of operational interruption, data exposure, and legal violations. A segmented virtual laboratory is an essential industry prerequisite for simulating real-world threat scenarios.
+
+### Core Objectives:
+* **Network Isolation:** Create an isolated VirtualBox NAT Network (`10.0.0.0/24`) that allows outbound connectivity for security updates while containing internal broadcast traffic.
+* **Attacker Machine Provisioning:** Deploy and optimize **Kali Linux 2026.2** with appropriate CPU, RAM, and storage allocations.
+* **Network Troubleshooting:** Address and permanently fix underlying Linux NetworkManager issues related to Duplicate Address Detection (DAD) timeouts over virtual bridged adapters.
+* **Disaster Recovery & Snapshotting:** Establish a safe, reversible baseline snapshot prior to executing vulnerability assessments and security tooling.
+
+---
+
+<br/>
+
+## 💻 Hardware & Virtualization Environment
+
+### Host Machine Specifications (Lenovo Host)
+* **Host Operating System:** Microsoft Windows 11 (64-bit)
+* **Processor (CPU):** Intel Core i5 (Multi-core Virtualization Enabled - Intel VT-x)
+* **Physical System RAM:** 8 GB DDR4
+* **Storage Drive:** 256 GB NVMe Solid State Drive (SSD)
+* **Hypervisor:** Oracle VM VirtualBox (v7.x)
+
+### Virtual Machine Resource Allocation (Kali Linux 2026.2)
+* **Base Memory (RAM):** 2048 MB (2.0 GB)
+* **Virtual CPU Cores:** 2 Processors (Nested Paging, PAE/NX, KVM Paravirtualization)
+* **Storage Allocation:** 80.09 GB Dynamic VDI (`kali-linux-2026.2-virtualbox-amd64.vdi`)
+* **Network Interface:** Intel PRO/1000 MT Desktop (Attached to `NatNetwork`)
+* **Promiscuous Mode:** `Allow All` (Ensures full raw packet inspection for sniffing tools)
+
+---
+
+<br/>
+
+## 🌐 Network Topology & Architecture Plan
 
 ```text
-       ┌──────────────────────────────────────────────┐
-       │             Windows 11 Host OS               │
-       └──────────────────────┬───────────────────────┘
-                              │
-                              ▼
-       ┌──────────────────────────────────────────────┐
-       │          Oracle VM VirtualBox Engine         │
-       └──────────────────────┬───────────────────────┘
-                              │
-                              ▼
-       ┌──────────────────────────────────────────────┐
-       │     Isolated NAT Network [ 10.0.0.0/24 ]     │
-       │     Gateway: 10.0.0.1  |  DNS: 8.8.8.8        │
-       └──────────────────────┬───────────────────────┘
-                              │
-                              ▼
-       ┌──────────────────────────────────────────────┐
-       │       Kali Linux 2026.2 (Attacker VM)        │
-       │       IP: 10.0.0.2/24  |  NIC: eth0          │
-       └──────────────────────────────────────────────┘
+               ┌─────────────────────────────────────────────────────────┐
+               │                Host OS: Windows 11                      │
+               │         Physical Connectivity & Hypervisor Layer        │
+               └────────────────────────────┬────────────────────────────┘
+                                            │
+                                            ▼
+               ┌─────────────────────────────────────────────────────────┐
+               │               Oracle VM VirtualBox Engine               │
+               │               Virtual Networking Driver                 │
+               └────────────────────────────┬────────────────────────────┘
+                                            │
+                                            ▼
+               ┌─────────────────────────────────────────────────────────┐
+               │       Segmented NAT Network: 10.0.0.0/24 (NatNetwork)   │
+               │       Gateway: 10.0.0.1  |  DHCP Range: 10.0.0.0/24     │
+               └────────────────────────────┬────────────────────────────┘
+                                            │
+                                            ▼
+               ┌─────────────────────────────────────────────────────────┐
+               │             Primary Attacker Machine                    │
+               │             Kali Linux 2026.2 (Debian)                  │
+               │             IP: 10.0.0.2/24 | DNS: 8.8.8.8              │
+               └─────────────────────────────────────────────────────────┘
